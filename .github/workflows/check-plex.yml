@@ -1,0 +1,22 @@
+name: Check Plex Remote Access
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check-plex:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Plex remote access
+        run: |
+          PLEX_URL="https://31.165.215.217:18944/identity"
+
+          if curl -k -fsS -m 15 -o /dev/null "$PLEX_URL"; then
+            curl -fsS -m 10 -o /dev/null "${{ secrets.HC_PING_URL }}"
+          else
+            curl -fsS -m 10 -o /dev/null "${{ secrets.HC_PING_URL }}/fail"
+            exit 1
+          fi
