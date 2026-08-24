@@ -12,9 +12,7 @@ jobs:
     steps:
       - name: Check Plex remote access
         run: |
-          PLEX_URL="https://31.165.215.217:18944/identity"
-
-          if curl -k -fsS -m 15 -o /dev/null "$PLEX_URL"; then
+          if curl -k -fsS -m 15 -o /dev/null "${{ secrets.PLEX_URL }}"; then
             curl -fsS -m 10 -o /dev/null "${{ secrets.HC_PING_URL }}"
           else
             curl -fsS -m 10 -o /dev/null "${{ secrets.HC_PING_URL }}/fail"
